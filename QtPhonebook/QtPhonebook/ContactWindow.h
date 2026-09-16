@@ -14,6 +14,7 @@ class ContactWindow : public QWidget
 
 private:
     QPushButton* button;
+    QPushButton* refreshbutton;
     QLabel* label;
     QListWidget* contacts;
     ContactManager* cont;
@@ -21,6 +22,7 @@ public:
     ContactWindow(QWidget* parent = nullptr)
     {
         button = new QPushButton("Add contact", this);
+        refreshbutton = new QPushButton("Refresh", this);
         label = new QLabel("Label", this);
         contacts = new QListWidget(this);
         contacts->addItem("Strings First");
@@ -29,8 +31,10 @@ public:
         QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(label);
         layout->addWidget(button);
+        layout->addWidget(refreshbutton);
         layout->addWidget(contacts);
         connect(button, &QPushButton::clicked, this, &ContactWindow::OnButtonClick);
+        connect(refreshbutton, &QPushButton::clicked, this, &ContactWindow::OnRefreshButtonClicked);
     }
     ~ContactWindow()
     {
@@ -64,11 +68,14 @@ private slots:
     void OnButtonClick()
     {
         MyWidget* Forman;
-        Forman = new MyWidget();
+        Forman = new MyWidget(this);
         Forman->SetCont(*cont);
         Forman->show();
     }
 
-
+    void OnRefreshButtonClicked()
+    {
+        Refresh();
+    }
 };
 

@@ -24,7 +24,7 @@ private:
 public:
     MyWidget(QWidget* parent = nullptr)
     {
-        button = new QPushButton("Button", this);
+        button = new QPushButton("Add Contact", this);
         label = new QLabel("Label", this);
         name = new QLineEdit("name", this);
         phone = new QLineEdit("phone", this);
@@ -53,11 +53,6 @@ private slots:
     void OnButtonClick()
     {
         cont->AddContact(name->text().toStdString(), { phone->text().toStdString() ,email->text().toStdString() ,adress->text().toStdString() });
-
-        ContactWindow* save= reinterpret_cast <ContactWindow*> (parent());
-
-        save->Refresh();
-
         close();
     }
 };

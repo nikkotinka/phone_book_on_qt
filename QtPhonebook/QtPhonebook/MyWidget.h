@@ -5,9 +5,9 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
+#include <qevent.h>
 #include "ContactManager.h"
 
-class ContactWindow;
 
 class MyWidget : public QWidget
 {
@@ -49,11 +49,19 @@ public:
         cont = &contacts;
     }
 
+    void closeEvent(QCloseEvent* event) override
+    {
+        emit CloseWidg();
+        event->accept();
+    }
+
 private slots:
     void OnButtonClick()
     {
         cont->AddContact(name->text().toStdString(), { phone->text().toStdString() ,email->text().toStdString() ,adress->text().toStdString() });
         close();
     }
+signals:
+    void CloseWidg();
 };
 

@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+**/.vs/
+
+# Build folders
+bin/
+obj/
+Debug/
+Release/
+
+# Visual Studio cache
+*.ipch
+*.pdb
+*.ilk
+*.obj
+*.log

@@ -1,20 +1,22 @@
 #pragma once
 #include <string>
+#include <qstring.h>
+
 class Contact
 {
 private:
-	std::string phone_number;
-	std::string email;
-	std::string adres;
+	QString phone_number;
+	QString email;
+	QString adres;
 public:
 	Contact() {};
-	Contact(std::string phone_number, std::string email, std::string adres) : phone_number (phone_number), email(email), adres(adres)
+	Contact(QString phone_number, QString email, QString adres) : phone_number (phone_number), email(email), adres(adres)
 	{
 		
 	}
-	std::string GetAll()
+	QString GetAll()
 	{
-		std::string res = "";
+		QString res = "";
 		res += phone_number;
 		res += ", ";
 		res += email;

@@ -9,10 +9,6 @@
 #include <QDebug>
 #include <QtGlobal>
 #include "MyWidget.h"
-//
-// поиск по всем полям
-// сделать справа от контактов чтобы он был первым в списке
-//
 class ContactWindow : public QWidget
 {
 
@@ -87,7 +83,7 @@ private slots:
 
     void Finder(const QString& str)
     {
-        std::map <QString, Contact> findnames = cont->FindClosestContacts(str);
+        std::map <QString, Contact> findnames = cont->FindContactsAtAllFields(str);
         contacts->clear();
         AddContacts(findnames);
     }

@@ -1,4 +1,3 @@
-#pragma warning (disable: 4996)
 #include <QtCore/QCoreApplication>
 #include <qapplication.h>
 #include "ContactWindow.h"

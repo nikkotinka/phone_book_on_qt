@@ -58,7 +58,7 @@ public:
 private slots:
     void OnButtonClick()
     {
-        cont->AddContact(name->text().toStdString(), { phone->text().toStdString() ,email->text().toStdString() ,adress->text().toStdString() });
+        cont->AddContact(name->text(), { phone->text().toStdString() ,email->text().toStdString() ,adress->text().toStdString() });
         close();
     }
 signals:

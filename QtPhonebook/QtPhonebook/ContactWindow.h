@@ -6,7 +6,13 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qstring.h>
+#include <QDebug>
+#include <QtGlobal>
 #include "MyWidget.h"
+//
+// поиск по всем полям
+// сделать справа от контактов чтобы он был первым в списке
+//
 class ContactWindow : public QWidget
 {
 
@@ -16,6 +22,7 @@ private:
     QPushButton* button;
     QLabel* label;
     QListWidget* contacts;
+    QLineEdit* find;
     ContactManager* cont;
 public:
     ContactWindow(QWidget* parent = nullptr)
@@ -23,14 +30,18 @@ public:
         button = new QPushButton("Add contact", this);
         label = new QLabel("Label", this);
         contacts = new QListWidget(this);
+        find = new QLineEdit(this);
         contacts->addItem("Strings First");
         contacts->addItem("Strings Second");
         contacts->setMinimumHeight(100);
         QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(label);
+        layout->addWidget(find);
         layout->addWidget(button);
         layout->addWidget(contacts);
         connect(button, &QPushButton::clicked, this, &ContactWindow::OnButtonClick);
+        connect(find, &QLineEdit::textChanged, this, &ContactWindow::Finder);
+        connect(contacts, &QListWidget::itemDoubleClicked, this, &ContactWindow::DeletePerson);
     }
     ~ContactWindow()
     {
@@ -42,7 +53,7 @@ public:
         cont = &contacts;
     }
 
-    void AddContacts(std::map <std::string, Contact> contact_map)
+    void AddContacts(std::map <QString, Contact> contact_map)
     {
         for (auto it = contact_map.begin(); it != contact_map.end(); it++)
         {
@@ -73,5 +84,27 @@ private slots:
 
         Forman->show();
     }
+
+    void Finder(const QString& str)
+    {
+        std::map <QString, Contact> findnames = cont->FindClosestContacts(str);
+        contacts->clear();
+        AddContacts(findnames);
+    }
+
+    void DeletePerson(QListWidgetItem* item)
+    {
+        QString name = "";
+        QString alltext = item->text();
+        for (auto it = alltext.begin(); *it != ','; it++)
+        {
+            name += *it;
+        }
+        if (cont->DeleteContact(name))
+        {
+            Refresh();
+        }
+    }
+
 };
 

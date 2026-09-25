@@ -9,6 +9,8 @@
 #include <QDebug>
 #include <QtGlobal>
 #include "MyWidget.h"
+#include "TableWindow.h"
+
 class ContactWindow : public QWidget
 {
 
@@ -27,8 +29,6 @@ public:
         label = new QLabel("Label", this);
         contacts = new QListWidget(this);
         find = new QLineEdit(this);
-        contacts->addItem("Strings First");
-        contacts->addItem("Strings Second");
         contacts->setMinimumHeight(100);
         QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(label);
@@ -51,13 +51,44 @@ public:
 
     void AddContacts(std::map <QString, Contact> contact_map)
     {
+        
         for (auto it = contact_map.begin(); it != contact_map.end(); it++)
         {
+            if (!it->second.GetFavorite())
+            {
+                continue;
+            }
             QString res = "";
+            QListWidgetItem* listw = new QListWidgetItem(contacts);
             res += it->first;
             res += ", ";
             res += it->second.GetAll();
-            contacts->addItem(res);
+            
+            TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
+
+            con->SetCont(it->second);
+            
+            contacts->setItemWidget(listw,con);
+        }
+        for (auto it = contact_map.begin(); it != contact_map.end(); it++)
+        {
+            if (it->second.GetFavorite())
+            {
+                continue;
+            }
+            QString res = "";
+            QListWidgetItem* listw = new QListWidgetItem(contacts);
+            res += it->first;
+            res += ", ";
+            res += it->second.GetAll();
+
+            TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
+
+            con->SetCont(it->second);
+
+            
+
+            contacts->setItemWidget(listw, con);
         }
     }
 
@@ -76,7 +107,6 @@ private slots:
         connect(Forman, &MyWidget::CloseWidg, this, &ContactWindow::Refresh);
 
         Forman->SetCont(*cont);
-
 
         Forman->show();
     }

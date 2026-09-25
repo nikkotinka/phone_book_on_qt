@@ -63,6 +63,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -112,7 +115,7 @@
     <ClInclude Include="Contact.h" />
     <ClInclude Include="ContactManager.h" />
     <QtMoc Include="ContactWindow.h" />
-    <ClInclude Include="TableWindow.h" />
+    <QtMoc Include="TableWindow.h" />
     <ClInclude Include="Ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

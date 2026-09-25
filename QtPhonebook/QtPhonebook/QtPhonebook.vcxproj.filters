@@ -52,12 +52,12 @@
     <QtMoc Include="ContactWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TableWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TableWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Contact.h">

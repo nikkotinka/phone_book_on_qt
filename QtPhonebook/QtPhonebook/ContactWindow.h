@@ -67,6 +67,9 @@ public:
             TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
 
             con->SetCont(it->second);
+
+            connect(con, &TableWindow::AddToFav, this, &ContactWindow::Refresh);
+
             
             contacts->setItemWidget(listw,con);
         }
@@ -85,6 +88,8 @@ public:
             TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
 
             con->SetCont(it->second);
+
+            connect(con, &TableWindow::AddToFav, this, &ContactWindow::Refresh);
 
             contacts->setItemWidget(listw, con);
         }
@@ -118,8 +123,13 @@ private slots:
 
     void DeletePerson(QListWidgetItem* item)
     {
+        QWidget* widget = contacts->itemWidget(item);
+
+        TableWindow* con = qobject_cast <TableWindow*> (widget);
+
         QString name = "";
-        QString alltext = item->text();
+        QString alltext = con->GetText();
+
         for (auto it = alltext.begin(); *it != ','; it++)
         {
             name += *it;

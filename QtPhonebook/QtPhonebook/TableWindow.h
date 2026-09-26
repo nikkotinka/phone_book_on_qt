@@ -7,6 +7,7 @@
 #include <qlineedit.h>
 #include <qstring.h>
 #include <qcheckbox.h>
+#include <qevent.h>
 #include <QDebug>
 
 #include "Contact.h"
@@ -53,6 +54,11 @@ public:
 		cont = &oneCont;
 	}
 
+	QString GetText()
+	{
+		return contact->text();
+	}
+
 private slots:
 
 	void CheckFavorite(Qt::CheckState chek)
@@ -60,12 +66,19 @@ private slots:
 		if (chek == Qt::CheckState::Unchecked)
 		{
 			cont->SetFavorite(false);
-			return;
-		}
 
-		cont->SetFavorite(true);
+		}
+		else
+		{
+			cont->SetFavorite(true);
+		}
+		
+		emit AddToFav();
 	}
 
 	
+signals:
+	
+	void AddToFav();
 };
 

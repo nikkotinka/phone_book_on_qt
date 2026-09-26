@@ -49,9 +49,9 @@ public:
         cont = &contacts;
     }
 
-    void AddContacts(std::map <QString, Contact> contact_map)
+    void AddContacts(std::map <QString, Contact> &contact_map)
     {
-        
+
         for (auto it = contact_map.begin(); it != contact_map.end(); it++)
         {
             if (!it->second.GetFavorite())
@@ -85,8 +85,6 @@ public:
             TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
 
             con->SetCont(it->second);
-
-            
 
             contacts->setItemWidget(listw, con);
         }

@@ -32,6 +32,7 @@ public:
 
 		layout->addWidget(contact);
 		layout->addWidget(addToFavorite);
+		connect(addToFavorite, &QCheckBox::checkStateChanged, this, &TableWindow::CheckFavorite);
 	}
 
 	TableWindow(QString cont, bool checked, QWidget* parent = nullptr) : QWidget(parent)

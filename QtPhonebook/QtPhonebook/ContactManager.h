@@ -17,7 +17,7 @@ public:
 		contact_map.insert({ name , cont });
 	}
 
-	std::map <QString, Contact> GetMap()
+	std::map <QString, Contact>& GetMap()
 	{
 		return contact_map;
 	}

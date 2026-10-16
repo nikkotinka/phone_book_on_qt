@@ -27,6 +27,26 @@ public:
 		return res;
 	}
 
+	QString GetPhone()
+	{
+		return phone_number;
+	}
+	QString GetEmail()
+	{
+		return email;
+	}
+	QString GetAdress()
+	{
+		return adres;
+	}
+
+	void SetAllInfo(QString phone_number, QString email, QString adres)
+	{
+		this->email = email;
+		this->adres = adres;
+		this->phone_number = phone_number;
+	}
+
 	void SetFavorite(bool fav)
 	{
 		favorite = fav;

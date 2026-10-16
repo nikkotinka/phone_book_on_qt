@@ -10,42 +10,52 @@
 #include <qevent.h>
 #include <QDebug>
 
+#include "EditWidget.h"
+
 #include "Contact.h"
 
 
-class TableWindow : public QWidget
+class OneContactWidget : public QWidget
 {
 	Q_OBJECT
 
 private:
 	QCheckBox* addToFavorite;
+	QPushButton* editContactButt;
 	QLabel* contact;
 
 	Contact* cont;
 
 public:
 
-	TableWindow(QWidget* parent = nullptr) : QWidget(parent)
+	OneContactWidget(QWidget* parent = nullptr) : QWidget(parent)
 	{
 		contact = new QLabel(this);
 		addToFavorite = new QCheckBox("Fav", this);
+		editContactButt = new QPushButton("Edit contactact", this);
+
 		QHBoxLayout* layout = new QHBoxLayout(this);
 
 		layout->addWidget(contact);
 		layout->addWidget(addToFavorite);
-		connect(addToFavorite, &QCheckBox::checkStateChanged, this, &TableWindow::CheckFavorite);
+		connect(addToFavorite, &QCheckBox::checkStateChanged, this, &OneContactWidget::CheckFavorite);
 	}
 
-	TableWindow(QString cont, bool checked, QWidget* parent = nullptr) : QWidget(parent)
+	OneContactWidget(QString cont, bool checked, QWidget* parent = nullptr) : QWidget(parent)
 	{
 		contact = new QLabel(cont, this);
 		addToFavorite = new QCheckBox("Fav", this);
+		editContactButt = new QPushButton("Edit contactact", this);
+
 		addToFavorite->setChecked(checked);
 		QHBoxLayout* layout = new QHBoxLayout(this);
 
 		layout->addWidget(contact);
 		layout->addWidget(addToFavorite);
-		connect(addToFavorite, &QCheckBox::checkStateChanged, this, &TableWindow::CheckFavorite);
+		layout->addWidget(editContactButt);
+
+		connect(addToFavorite, &QCheckBox::checkStateChanged, this, &OneContactWidget::CheckFavorite);
+		connect(editContactButt, &QPushButton::clicked, this, &OneContactWidget::EditContact);
 
 	}
 
@@ -73,12 +83,25 @@ private slots:
 			cont->SetFavorite(true);
 		}
 		
-		emit AddToFav();
+		emit RefreshBookAfterAddToFav();
 	}
 
+	void EditContact()
+	{
+		EditWidget* editContactWidget = new EditWidget(this);
+		editContactWidget->SetCont(*cont);
+
+		editContactWidget->show();
+
+		connect(editContactWidget, &EditWidget::CloseWidg, this, &OneContactWidget::RefreshBookAfterEdditContact);
+		
+
+	}
 	
 signals:
 	
-	void AddToFav();
+	void RefreshBookAfterAddToFav();
+	void RefreshBookAfterEdditContact();
+	
 };
 

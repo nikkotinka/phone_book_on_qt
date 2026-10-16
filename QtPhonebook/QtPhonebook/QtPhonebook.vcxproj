@@ -104,19 +104,19 @@
     <ClCompile Include="ContactManager.cpp" />
     <ClCompile Include="ContactWindow.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyWidget.cpp" />
-    <ClCompile Include="TableWindow.cpp" />
-    <ClCompile Include="Ui.cpp" />
+    <ClCompile Include="NewContactWidget.cpp" />
+    <ClCompile Include="OneContactWidget.cpp" />
+    <ClCompile Include="EditWidget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MyWidget.h" />
+    <QtMoc Include="NewContactWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contact.h" />
     <ClInclude Include="ContactManager.h" />
     <QtMoc Include="ContactWindow.h" />
-    <QtMoc Include="TableWindow.h" />
-    <ClInclude Include="Ui.h" />
+    <QtMoc Include="OneContactWidget.h" />
+    <QtMoc Include="EditWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

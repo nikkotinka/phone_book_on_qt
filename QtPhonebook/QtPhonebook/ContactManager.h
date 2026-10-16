@@ -10,6 +10,8 @@ private:
 	std::map <QString, Contact> contact_map;
 
 public:
+	std::map <QString, Contact> finded_map;
+
 	ContactManager() {};
 
 	void AddContact(QString name, Contact cont)
@@ -17,23 +19,32 @@ public:
 		contact_map.insert({ name , cont });
 	}
 
+	Contact* FindContact(QString name)
+	{
+		auto it = contact_map.find(name);
+		if (it == contact_map.end())
+			return new Contact();
+
+		return &it->second;
+	}
+
 	std::map <QString, Contact>& GetMap()
 	{
 		return contact_map;
 	}
 
-	std::map <QString, Contact> FindContactsAtAllFields(QString name)
+	std::map <QString, Contact>& FindContactsAtAllFields(QString name)
 	{
-		std::map <QString, Contact> results_after_find;
+		finded_map.clear();
 		for (auto it = contact_map.begin(); it != contact_map.end(); it++)
 		{
 			if (it->first.contains(name))
-				results_after_find.emplace(*it);
+				finded_map.emplace(*it);
 			if (it->second.GetAll().contains(name))
-				results_after_find.emplace(*it);
+				finded_map.emplace(*it);
 		}
 
-		return results_after_find;
+		return finded_map;
 	}
 
 	bool DeleteContact(QString& name)

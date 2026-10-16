@@ -26,16 +26,16 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyWidget.cpp">
+    <ClCompile Include="NewContactWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ui.cpp">
+    <ClCompile Include="EditWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ContactWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TableWindow.cpp">
+    <ClCompile Include="OneContactWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Contact.cpp">
@@ -46,20 +46,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MyWidget.h">
+    <QtMoc Include="NewContactWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ContactWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TableWindow.h">
+    <QtMoc Include="OneContactWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="EditWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Contact.h">
       <Filter>Header Files</Filter>
     </ClInclude>

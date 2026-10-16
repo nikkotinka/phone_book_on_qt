@@ -6,47 +6,46 @@
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qevent.h>
-#include "ContactManager.h"
+
+#include "Contact.h"
 
 
-class MyWidget : public QWidget
+class EditWidget : public QWidget
 {
     Q_OBJECT
 
 private:
-    QPushButton* button;
-    QLabel* label;
+    QPushButton* editContactButton;
     QLineEdit* name;
     QLineEdit* phone;
     QLineEdit* email;
     QLineEdit* adress;
-    ContactManager* cont;
+    Contact* contactForEdit;
 public:
-    MyWidget(QWidget* parent = nullptr)
+    EditWidget(QWidget* parent = nullptr)
     {
-        button = new QPushButton("Add Contact", this);
-        label = new QLabel("Label", this);
-        name = new QLineEdit("name", this);
+        editContactButton = new QPushButton("Edit Contact", this);
         phone = new QLineEdit("phone", this);
         email = new QLineEdit("email", this);
         adress = new QLineEdit("adress", this);
         QVBoxLayout* layout = new QVBoxLayout(this);
-        layout->addWidget(label);
-        layout->addWidget(button);
-        layout->addWidget(name);
+        layout->addWidget(editContactButton);
         layout->addWidget(phone);
         layout->addWidget(email);
         layout->addWidget(adress);
-        connect(button, &QPushButton::clicked, this, &MyWidget::OnButtonClick);
+        connect(editContactButton, &QPushButton::clicked, this, &EditWidget::OnButtonClick);
     }
-    ~MyWidget()
+    ~EditWidget()
     {
 
     }
 
-    void SetCont(ContactManager& contacts)
+    void SetCont(Contact& contacts)
     {
-        cont = &contacts;
+        contactForEdit = &contacts;
+        phone->setText(contactForEdit->GetPhone());
+        email->setText(contactForEdit->GetEmail());
+        adress->setText(contactForEdit->GetAdress());
     }
 
     void closeEvent(QCloseEvent* event) override
@@ -58,10 +57,13 @@ public:
 private slots:
     void OnButtonClick()
     {
-        cont->AddContact(name->text(), { phone->text() ,email->text() ,adress->text() });
+        contactForEdit->SetAllInfo(phone->text(), email->text(), adress->text());
+        emit RefreshBook();
         close();
     }
 signals:
     void CloseWidg();
+
+    void RefreshBook();
 };
 

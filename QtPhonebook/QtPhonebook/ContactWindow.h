@@ -8,8 +8,8 @@
 #include <qstring.h>
 #include <QDebug>
 #include <QtGlobal>
-#include "MyWidget.h"
-#include "TableWindow.h"
+#include "NewContactWidget.h"
+#include "OneContactWidget.h"
 
 class ContactWindow : public QWidget
 {
@@ -17,27 +17,27 @@ class ContactWindow : public QWidget
     Q_OBJECT
 
 private:
-    QPushButton* button;
+    QPushButton* addContactButton;
     QLabel* label;
-    QListWidget* contacts;
+    QListWidget* allContacts;
     QLineEdit* find;
-    ContactManager* cont;
+    ContactManager* contactsData;
 public:
     ContactWindow(QWidget* parent = nullptr)
     {
-        button = new QPushButton("Add contact", this);
+        addContactButton = new QPushButton("Add contact", this);
         label = new QLabel("Label", this);
-        contacts = new QListWidget(this);
+        allContacts = new QListWidget(this);
         find = new QLineEdit(this);
-        contacts->setMinimumHeight(100);
+        allContacts->setMinimumHeight(100);
         QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(label);
         layout->addWidget(find);
-        layout->addWidget(button);
-        layout->addWidget(contacts);
-        connect(button, &QPushButton::clicked, this, &ContactWindow::OnButtonClick);
+        layout->addWidget(addContactButton);
+        layout->addWidget(allContacts);
+        connect(addContactButton, &QPushButton::clicked, this, &ContactWindow::OnButtonClick);
         connect(find, &QLineEdit::textChanged, this, &ContactWindow::Finder);
-        connect(contacts, &QListWidget::itemDoubleClicked, this, &ContactWindow::DeletePerson);
+        connect(allContacts, &QListWidget::itemDoubleClicked, this, &ContactWindow::DeletePerson);
     }
     ~ContactWindow()
     {
@@ -46,7 +46,7 @@ public:
 
     void SetCont(ContactManager &contacts)
     {
-        cont = &contacts;
+        contactsData = &contacts;
     }
 
     void AddContacts(std::map <QString, Contact> &contact_map)
@@ -59,19 +59,20 @@ public:
                 continue;
             }
             QString res = "";
-            QListWidgetItem* listw = new QListWidgetItem(contacts);
+            QListWidgetItem* listw = new QListWidgetItem(allContacts);
             res += it->first;
             res += ", ";
             res += it->second.GetAll();
             
-            TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
+            OneContactWidget* newOneContact = new OneContactWidget(res, it->second.GetFavorite(), this);
 
-            con->SetCont(it->second);
+            newOneContact->SetCont(*contactsData->FindContact(it->first));
 
-            connect(con, &TableWindow::AddToFav, this, &ContactWindow::Refresh);
+            connect(newOneContact, &OneContactWidget::RefreshBookAfterAddToFav, this, &ContactWindow::Refresh);
+            connect(newOneContact, &OneContactWidget::RefreshBookAfterEdditContact, this, &ContactWindow::Refresh);
 
             
-            contacts->setItemWidget(listw,con);
+            allContacts->setItemWidget(listw, newOneContact);
         }
         for (auto it = contact_map.begin(); it != contact_map.end(); it++)
         {
@@ -80,61 +81,63 @@ public:
                 continue;
             }
             QString res = "";
-            QListWidgetItem* listw = new QListWidgetItem(contacts);
+            QListWidgetItem* listw = new QListWidgetItem(allContacts);
             res += it->first;
             res += ", ";
             res += it->second.GetAll();
 
-            TableWindow* con = new TableWindow(res, it->second.GetFavorite(), this);
+            OneContactWidget* newOneContact = new OneContactWidget(res, it->second.GetFavorite(), this);
 
-            con->SetCont(it->second);
+            newOneContact->SetCont(*contactsData->FindContact(it->first));
 
-            connect(con, &TableWindow::AddToFav, this, &ContactWindow::Refresh);
+            connect(newOneContact, &OneContactWidget::RefreshBookAfterAddToFav, this, &ContactWindow::Refresh);
+            connect(newOneContact, &OneContactWidget::RefreshBookAfterEdditContact, this, &ContactWindow::Refresh);
 
-            contacts->setItemWidget(listw, con);
+            allContacts->setItemWidget(listw, newOneContact);
         }
     }
 
     void Refresh()
     {
-        contacts->clear();
-        AddContacts(cont->GetMap());
+        //contacts->clear();
+        //AddContacts(cont->GetMap());
+        Finder();
     }
 
 private slots:
     void OnButtonClick()
     {
-        MyWidget* Forman;
-        Forman = new MyWidget(this);
+        NewContactWidget* Forman;
+        Forman = new NewContactWidget(this);
 
-        connect(Forman, &MyWidget::CloseWidg, this, &ContactWindow::Refresh);
+        connect(Forman, &NewContactWidget::CloseWidg, this, &ContactWindow::Refresh);
 
-        Forman->SetCont(*cont);
+        Forman->SetCont(*contactsData);
 
         Forman->show();
     }
 
-    void Finder(const QString& str)
+    void Finder()
     {
-        std::map <QString, Contact> findnames = cont->FindContactsAtAllFields(str);
-        contacts->clear();
+        std::map <QString, Contact> findnames = contactsData->FindContactsAtAllFields(find->text());
+        allContacts->clear();
         AddContacts(findnames);
     }
 
     void DeletePerson(QListWidgetItem* item)
     {
-        QWidget* widget = contacts->itemWidget(item);
+        QWidget* widget = allContacts->itemWidget(item);
 
-        TableWindow* con = qobject_cast <TableWindow*> (widget);
+        OneContactWidget* thisContact = qobject_cast <OneContactWidget*> (widget);
 
         QString name = "";
-        QString alltext = con->GetText();
+        QString alltext = thisContact->GetText();
 
         for (auto it = alltext.begin(); *it != ','; it++)
         {
             name += *it;
         }
-        if (cont->DeleteContact(name))
+        if (contactsData->DeleteContact(name))
         {
             Refresh();
         }

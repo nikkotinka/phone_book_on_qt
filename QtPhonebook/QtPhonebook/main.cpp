@@ -12,8 +12,8 @@ int main(int argc, char* argv[])
     contacts.AddContact("AAAAAaa", { "BBB","CCCC","DDDD" });
 
     ContactWindow wid;
-    wid.AddContacts(contacts.GetMap());
     wid.SetCont(contacts);
+    wid.AddContacts(contacts.GetMap());
     wid.show();
 
 
